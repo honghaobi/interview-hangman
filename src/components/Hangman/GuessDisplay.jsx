@@ -14,4 +14,3 @@ export const GuessDisplay = ( {word, correctLetters} ) =>
     </React.Fragment>
   );
 };
-

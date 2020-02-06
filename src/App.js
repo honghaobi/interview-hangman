@@ -1,18 +1,22 @@
 import React from 'react';
-import {Hangman} from './components';
+import {GuessDisplay, Hangman} from './components';
+import {includes, sortedUniq, split} from 'lodash';
 import * as randomWords from 'random-words';
 
 import './App.css';
 
 export default class App extends React.Component
 {
-  constructor()
+  constructor( props )
   {
-    super();
+    super( props );
     this.state = {
-      guessWordArr: randomWords().split( "" ),
+      gameState: "inProgress",
+      guessWord: randomWords(),
       guessedLetter: "",
-      guessedLetters: [],
+      guessedLettersHistory: [],
+      incorrectGuessCount: 0,
+      correctLetters: "",
     }
   }
 
@@ -22,16 +26,19 @@ export default class App extends React.Component
       <div className="App">
         <div className="container">
           <h1>React Hangman</h1>
-          <h2>Word to Quess: {this.state.guessWordArr}</h2>
-          <h3>You have already guessed these letters: {this.state.guessedLetters}</h3>
+          <h2>Word to Quess: {this.state.guessWord}</h2>
+          <h3>You have already guessed these letters: {this.state.guessedLettersHistory}</h3>
+          <h3>Letters that are correct: {this.state.correctLetters}</h3>
           <h3>Letter You have submited: {this.state.guessedLetter}</h3>
+          <h4>{this.state.gameState}</h4>
           <form onSubmit={this.handleGuessSubmitted}>
             <label>Guess a letter:
               <input required type="text" name="name" minLength="1" maxLength="1" value={this.state.guessedLetter} onChange={this.handleChange}/>
             </label>
             <input type="submit" value="Submit"/>
           </form>
-          <Hangman incorrectGuessCount={10}></Hangman>
+          <GuessDisplay word={this.state.guessWord} correctLetters={this.state.correctLetters}/>
+          <Hangman incorrectGuessCount={this.state.incorrectGuessCount}/>
         </div>
       </div>
     );
@@ -41,14 +48,40 @@ export default class App extends React.Component
   handleGuessSubmitted = ( event ) =>
   {
     event.preventDefault();
-    if ( this.state.guessedLetters.includes( this.state.guessedLetter ) )
+    const {incorrectGuessCount, guessWord, guessedLetter, guessedLettersHistory, correctLetters} = this.state;
+
+    this.handleGameWinLossState( incorrectGuessCount, guessWord, correctLetters );
+
+    if ( includes( guessWord, guessedLetter ) )
     {
-      window.alert( `you have already guessed ${this.state.guessedLetter}, please try a different letter` );
+      this.setState( {correctLetters: correctLetters.concat( guessedLetter )} );
+    }
+    else
+    {
+      this.setState( {incorrectGuessCount: incorrectGuessCount + 1} );
+    }
+
+    if ( includes( guessedLettersHistory, guessedLetter ) )
+    {
+      window.alert( `you have already guessed ${guessedLetter}, please try a different letter` );
       this.setState( {guessedLetter: ""} );
     }
     else
     {
-      this.setState( {guessedLetters: this.state.guessedLetters.concat( this.state.guessedLetter )} )
+      this.setState( {guessedLettersHistory: guessedLettersHistory.concat( guessedLetter )} );
     }
+    this.setState( {guessedLetter: ""} );
   };
+
+  handleGameWinLossState( incorrectGuessCount, guessWord, correctLetters )
+  {
+    if ( incorrectGuessCount === 10 )
+    {
+      this.setState( {gameState: "lost", incorrectGuessCount: 0} );
+    }
+    else if ( sortedUniq( split( guessWord ) ) === sortedUniq( split( correctLetters ) ) )
+    {
+      this.setState( {gameState: "won", incorrectGuessCount: 0} );
+    }
+  }
 };

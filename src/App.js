@@ -1,5 +1,5 @@
 import React from 'react';
-import {GuessDisplay, Hangman} from './components';
+import {GameStatus, GuessDisplay, Hangman} from './components';
 import {includes, split, uniq} from 'lodash';
 import * as randomWords from 'random-words';
 
@@ -29,11 +29,7 @@ export default class App extends React.Component
       <div className="App">
         <div className="container">
           <h1>React Hangman</h1>
-          <h2>Word to Quess: {guessWord}</h2>
-          <h3>Incorrect Letters: {incorrectLetters}</h3>
-          <h3>Correct Letters: {correctLetters}</h3>
-          <h3>Guessing Letter {guessingLetter}</h3>
-          <h4>{gameStatus}</h4>
+          <GameStatus guessingLetter={guessingLetter} incorrectLetters={incorrectLetters} correctLetters={correctLetters} gameStatus={gameStatus}/>
           <form onSubmit={this.handleGuessSubmitted}>
             <label>Guess a letter:
               <input required type="text" name="name" minLength="1" maxLength="1" value={guessingLetter} onChange={this.handleChange}/>
@@ -61,13 +57,13 @@ export default class App extends React.Component
     const isCorrectGuess = includes( guessWord, guessingLetter );
 
     alreadyGuessedLetter ? this.handleAlreadyGuessedLetter( guessingLetter )
-                         : isCorrectGuess ? this.handleCorrectGuess( correctLetters, guessingLetter )
-                                          : this.handleIncorrectGuess( incorrectGuessCount, incorrectLetters, guessingLetter );
+                         : isCorrectGuess ? this.handleCorrectGuess( guessingLetter, correctLetters )
+                                          : this.handleIncorrectGuess( guessingLetter, incorrectLetters, incorrectGuessCount );
 
     this.setState( {guessingLetter: ""} );
   };
 
-  handleIncorrectGuess = ( incorrectGuessCount, incorrectLetters, guessingLetter ) =>
+  handleIncorrectGuess = ( guessingLetter, incorrectLetters, incorrectGuessCount ) =>
   {
     this.setState( {
       incorrectGuessCount: incorrectGuessCount + 1,
@@ -75,7 +71,7 @@ export default class App extends React.Component
     } );
   };
 
-  handleCorrectGuess = ( correctLetters, guessingLetter ) =>
+  handleCorrectGuess = ( guessingLetter, correctLetters ) =>
   {
     if ( !includes( correctLetters, guessingLetter ) )
     {

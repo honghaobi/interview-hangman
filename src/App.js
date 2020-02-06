@@ -21,7 +21,7 @@ export default class App extends React.Component
         <div className="container">
           <h1>React Hangman</h1>
           <GameStatus incorrectLetters={incorrectLetters} correctLetters={correctLetters} incorrectGuessCount={incorrectGuessCount}/>
-          <GuessLetterSubmit guessingLetter={guessingLetter} handleSubmit={this.handleGuessSubmitted} handleChange={this.handleChange}/>
+          <GuessLetterSubmit guessingLetter={guessingLetter} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
           <GuessDisplay word={word} correctLetters={correctLetters}/>
           <Hangman incorrectGuessCount={incorrectGuessCount}/>
         </div>
@@ -35,7 +35,7 @@ export default class App extends React.Component
     this.handleGameStatusAndReset( incorrectGuessCount, word, correctLetters );
   };
 
-  handleGuessSubmitted = ( event ) =>
+  handleSubmit = ( event ) =>
   {
     event.preventDefault();
     this.handleGuessingLogic();

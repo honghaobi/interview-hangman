@@ -1,8 +1,7 @@
 import * as randomWords from "random-words";
 
 export const initialState = {
-  gameStatus: "inProgress",
-  guessWord: randomWords(),
+  word: randomWords(),
   guessingLetter: "",
   incorrectLetters: "",
   incorrectGuessCount: 0,

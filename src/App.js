@@ -15,15 +15,14 @@ export default class App extends React.Component
 
   render()
   {
-    const {incorrectGuessCount, guessWord, guessingLetter, incorrectLetters, correctLetters, gameStatus} = this.state;
+    const {incorrectGuessCount, word, guessingLetter, incorrectLetters, correctLetters} = this.state;
     return (
       <div className="App">
         <div className="container">
           <h1>React Hangman</h1>
-          <GameStatus guessingLetter={guessingLetter} incorrectLetters={incorrectLetters} correctLetters={correctLetters} gameStatus={gameStatus}
-                      incorrectGuessCount={incorrectGuessCount}/>
+          <GameStatus incorrectLetters={incorrectLetters} correctLetters={correctLetters} incorrectGuessCount={incorrectGuessCount}/>
           <GuessLetterSubmit guessingLetter={guessingLetter} handleSubmit={this.handleGuessSubmitted} handleChange={this.handleChange}/>
-          <GuessDisplay word={guessWord} correctLetters={correctLetters}/>
+          <GuessDisplay word={word} correctLetters={correctLetters}/>
           <Hangman incorrectGuessCount={incorrectGuessCount}/>
         </div>
       </div>
@@ -32,8 +31,8 @@ export default class App extends React.Component
 
   componentDidUpdate( prevProps, prevState, snapshot )
   {
-    const {incorrectGuessCount, guessWord, correctLetters} = this.state;
-    this.handleGameStatusAndReset( incorrectGuessCount, guessWord, correctLetters );
+    const {incorrectGuessCount, word, correctLetters} = this.state;
+    this.handleGameStatusAndReset( incorrectGuessCount, word, correctLetters );
   };
 
   handleGuessSubmitted = ( event ) =>
@@ -45,9 +44,9 @@ export default class App extends React.Component
 
   handleGuessingLogic = () =>
   {
-    const {incorrectGuessCount, guessWord, guessingLetter, incorrectLetters, correctLetters} = this.state;
+    const {incorrectGuessCount, word, guessingLetter, incorrectLetters, correctLetters} = this.state;
     const isLetterAlreadyGuessed = includes( [...incorrectLetters, ...correctLetters], guessingLetter );
-    const isGuessCorrect = includes( guessWord, guessingLetter );
+    const isGuessCorrect = includes( word, guessingLetter );
     const isLetterInvalid = !guessingLetter.match( /[a-z]/ );
 
     isLetterInvalid ? this.handleInvalidInput()
@@ -67,20 +66,20 @@ export default class App extends React.Component
     } );
   };
 
-  handleGameStatusAndReset = ( incorrectGuessCount, guessWord, correctLetters ) =>
+  handleGameStatusAndReset = ( incorrectGuessCount, word, correctLetters ) =>
   {
-    let guessedAllLettersCorrect = uniq( split( guessWord, "" ) ).length === correctLetters.length;
-    if ( guessedAllLettersCorrect )
-    {
-      this.setState( {gameStatus: "won"} );
-      this.handleReset();
-    }
-    else if ( incorrectGuessCount === 10 )
-    {
-      this.setState( {gameStatus: "lost"} );
-      this.handleReset();
-    }
+    let guessedWordCorrect = uniq( split( word, "" ) ).length === correctLetters.length;
+    let noMoreGuesses = incorrectGuessCount === 10;
+
+    guessedWordCorrect && this.handleGameResult( "You Won!!" );
+    noMoreGuesses && this.handleGameResult( `You lost! The word is ${this.state.word}` )
   };
+
+  handleGameResult = ( message ) =>
+  {
+    window.alert( message );
+    this.handleReset();
+  }
 
   handleInvalidInput = () => window.alert( "Please enter a valid letter" );
   handleAlreadyGuessedLetter = guessingLetter => window.alert( `You have already guessed ${guessingLetter}, please try a different letter` );

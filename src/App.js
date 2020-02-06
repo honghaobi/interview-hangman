@@ -4,17 +4,26 @@ import * as randomWords from 'random-words';
 
 import './App.css';
 
-const App = () =>
+export default class App extends React.Component
 {
-  return (
-    <div className="App">
-      <div className="container">
-        <h1>React Hangman</h1>
-        <h2>Word to Quess: {randomWords()}</h2>
-        <Hangman incorrectGuessCount={10}></Hangman>
-      </div>
-    </div>
-  );
-};
+  constructor()
+  {
+    super();
+    this.state = {
+      guessWordArr: randomWords().split( "" ),
+    }
+  }
 
-export default App;
+  render()
+  {
+    return (
+      <div className="App">
+        <div className="container">
+          <h1>React Hangman</h1>
+          <h2>Word to Quess: {this.state.guessWordArr}</h2>
+          <Hangman incorrectGuessCount={10}></Hangman>
+        </div>
+      </div>
+    );
+  }
+};

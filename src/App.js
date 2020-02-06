@@ -1,5 +1,5 @@
 import React from 'react';
-import {GameStatus, GuessDisplay, Hangman} from './components';
+import {GameStatus, GuessDisplay, GuessLetterSubmit, Hangman} from './components';
 import {includes, split, uniq} from 'lodash';
 import * as randomWords from 'random-words';
 
@@ -30,12 +30,7 @@ export default class App extends React.Component
         <div className="container">
           <h1>React Hangman</h1>
           <GameStatus guessingLetter={guessingLetter} incorrectLetters={incorrectLetters} correctLetters={correctLetters} gameStatus={gameStatus}/>
-          <form onSubmit={this.handleGuessSubmitted}>
-            <label>Guess a letter:
-              <input required type="text" name="name" minLength="1" maxLength="1" value={guessingLetter} onChange={this.handleChange}/>
-            </label>
-            <input type="submit" value="Submit"/>
-          </form>
+          <GuessLetterSubmit guessingLetter={guessingLetter} handleSubmit={this.handleGuessSubmitted} handleChange={this.handleChange}/>
           <GuessDisplay word={guessWord} correctLetters={correctLetters}/>
           <Hangman incorrectGuessCount={incorrectGuessCount}/>
         </div>
@@ -47,7 +42,7 @@ export default class App extends React.Component
   {
     const {incorrectGuessCount, guessWord, correctLetters} = this.state;
     this.handleGameStatusAndReset( incorrectGuessCount, guessWord, correctLetters );
-  }
+  };
 
   handleGuessSubmitted = ( event ) =>
   {
@@ -97,4 +92,3 @@ export default class App extends React.Component
   handleChange = event => this.setState( {guessingLetter: event.target.value} );
   handleReset = gameStatus => this.setState( initialState );
 }
-;

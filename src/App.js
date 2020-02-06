@@ -29,7 +29,8 @@ export default class App extends React.Component
       <div className="App">
         <div className="container">
           <h1>React Hangman</h1>
-          <GameStatus guessingLetter={guessingLetter} incorrectLetters={incorrectLetters} correctLetters={correctLetters} gameStatus={gameStatus} incorrectGuessCount={incorrectGuessCount}/>
+          <GameStatus guessingLetter={guessingLetter} incorrectLetters={incorrectLetters} correctLetters={correctLetters} gameStatus={gameStatus}
+                      incorrectGuessCount={incorrectGuessCount}/>
           <GuessLetterSubmit guessingLetter={guessingLetter} handleSubmit={this.handleGuessSubmitted} handleChange={this.handleChange}/>
           <GuessDisplay word={guessWord} correctLetters={correctLetters}/>
           <Hangman incorrectGuessCount={incorrectGuessCount}/>
@@ -70,14 +71,15 @@ export default class App extends React.Component
 
   handleGameStatusAndReset = ( incorrectGuessCount, guessWord, correctLetters ) =>
   {
-    if ( incorrectGuessCount === 10 )
-    {
-      this.setState( {gameStatus: "lost"} );
-      this.handleReset();
-    }
-    else if ( uniq( split( guessWord, "" ) ).length === correctLetters.length )
+    let guessedAllLettersCorrect = uniq( split( guessWord, "" ) ).length === correctLetters.length;
+    if ( guessedAllLettersCorrect )
     {
       this.setState( {gameStatus: "won"} );
+      this.handleReset();
+    }
+    else if ( incorrectGuessCount === 10 )
+    {
+      this.setState( {gameStatus: "lost"} );
       this.handleReset();
     }
   };

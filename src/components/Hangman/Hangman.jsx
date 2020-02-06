@@ -150,7 +150,7 @@ export const Hangman = ({ incorrectGuessCount = 0 }) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
-    // If the guess count went backward then reset the drawn state
+    // If the guess count went backward then handleReset the drawn state
     if (previousIncorrectGuessCountRef.current > incorrectGuessCount) {
       resetCanvas();
     }

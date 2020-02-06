@@ -1,18 +1,9 @@
 import React from 'react';
 import {GameStatus, GuessDisplay, GuessLetterSubmit, Hangman} from './components';
 import {includes, split, toLower, uniq} from 'lodash';
-import * as randomWords from 'random-words';
+import {initialState} from "./components/Hangman/helper";
 
 import './App.css';
-
-const initialState = {
-  gameStatus: "inProgress",
-  guessWord: randomWords(),
-  guessingLetter: "",
-  incorrectLetters: "",
-  incorrectGuessCount: 0,
-  correctLetters: "",
-};
 
 export default class App extends React.Component
 {
@@ -48,17 +39,22 @@ export default class App extends React.Component
   handleGuessSubmitted = ( event ) =>
   {
     event.preventDefault();
+    this.handleGuessingLogic();
+    this.setState( {guessingLetter: ""} );
+  };
+
+  handleGuessingLogic = () =>
+  {
     const {incorrectGuessCount, guessWord, guessingLetter, incorrectLetters, correctLetters} = this.state;
-    const alreadyGuessedLetter = includes( [...incorrectLetters, ...correctLetters], guessingLetter );
+    const isLetterAlreadyGuessed = includes( [...incorrectLetters, ...correctLetters], guessingLetter );
     const isGuessCorrect = includes( guessWord, guessingLetter );
     const isLetterInvalid = !guessingLetter.match( /[a-z]/ );
 
     isLetterInvalid ? this.handleInvalidInput()
-                    : alreadyGuessedLetter ? this.handleAlreadyGuessedLetter( guessingLetter )
-                                           : isGuessCorrect ? this.handleCorrectGuess( guessingLetter, correctLetters )
-                                                            : this.handleIncorrectGuess( guessingLetter, incorrectLetters, incorrectGuessCount );
+                    : isLetterAlreadyGuessed ? this.handleAlreadyGuessedLetter( guessingLetter )
+                                             : isGuessCorrect ? this.handleCorrectGuess( guessingLetter, correctLetters )
+                                                              : this.handleIncorrectGuess( guessingLetter, incorrectLetters, incorrectGuessCount );
 
-    this.setState( {guessingLetter: ""} );
   };
 
   handleCorrectGuess = ( guessingLetter, correctLetters ) => this.setState( {correctLetters: [...correctLetters, guessingLetter]} );

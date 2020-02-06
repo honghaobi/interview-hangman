@@ -29,7 +29,7 @@ export default class App extends React.Component
       <div className="App">
         <div className="container">
           <h1>React Hangman</h1>
-          <GameStatus guessingLetter={guessingLetter} incorrectLetters={incorrectLetters} correctLetters={correctLetters} gameStatus={gameStatus}/>
+          <GameStatus guessingLetter={guessingLetter} incorrectLetters={incorrectLetters} correctLetters={correctLetters} gameStatus={gameStatus} incorrectGuessCount={incorrectGuessCount}/>
           <GuessLetterSubmit guessingLetter={guessingLetter} handleSubmit={this.handleGuessSubmitted} handleChange={this.handleChange}/>
           <GuessDisplay word={guessWord} correctLetters={correctLetters}/>
           <Hangman incorrectGuessCount={incorrectGuessCount}/>

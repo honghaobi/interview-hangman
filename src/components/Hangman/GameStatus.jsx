@@ -1,5 +1,4 @@
 import React from 'react';
-import {includes, map} from 'lodash';
 
 export const GameStatus = ( {guessingLetter, incorrectLetters, correctLetters, gameStatus} ) =>
 {

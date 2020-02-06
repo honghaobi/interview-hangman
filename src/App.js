@@ -1,6 +1,6 @@
 import React from 'react';
 import {GameStatus, GuessDisplay, GuessLetterSubmit, Hangman} from './components';
-import {includes, split, uniq} from 'lodash';
+import {includes, split, toLower, uniq} from 'lodash';
 import * as randomWords from 'random-words';
 
 import './App.css';
@@ -49,14 +49,16 @@ export default class App extends React.Component
     event.preventDefault();
     const {incorrectGuessCount, guessWord, guessingLetter, incorrectLetters, correctLetters} = this.state;
     const alreadyGuessedLetter = includes( incorrectLetters.concat( correctLetters ), guessingLetter );
-    const isCorrectGuess = includes( guessWord, guessingLetter );
+    const isGuessCorrect = includes( guessWord, guessingLetter );
 
     alreadyGuessedLetter ? this.handleAlreadyGuessedLetter( guessingLetter )
-                         : isCorrectGuess ? this.handleCorrectGuess( guessingLetter, correctLetters )
+                         : isGuessCorrect ? this.handleCorrectGuess( guessingLetter, correctLetters )
                                           : this.handleIncorrectGuess( guessingLetter, incorrectLetters, incorrectGuessCount );
 
     this.setState( {guessingLetter: ""} );
   };
+
+  handleCorrectGuess = ( guessingLetter, correctLetters ) => this.setState( {correctLetters: correctLetters.concat( guessingLetter )} );
 
   handleIncorrectGuess = ( guessingLetter, incorrectLetters, incorrectGuessCount ) =>
   {
@@ -64,14 +66,6 @@ export default class App extends React.Component
       incorrectGuessCount: incorrectGuessCount + 1,
       incorrectLetters: incorrectLetters.concat( guessingLetter )
     } );
-  };
-
-  handleCorrectGuess = ( guessingLetter, correctLetters ) =>
-  {
-    if ( !includes( correctLetters, guessingLetter ) )
-    {
-      this.setState( {correctLetters: correctLetters.concat( guessingLetter )} );
-    }
   };
 
   handleGameStatusAndReset = ( incorrectGuessCount, guessWord, correctLetters ) =>
@@ -89,6 +83,6 @@ export default class App extends React.Component
   };
 
   handleAlreadyGuessedLetter = guessingLetter => window.alert( `you have already guessed ${guessingLetter}, please try a different letter` );
-  handleChange = event => this.setState( {guessingLetter: event.target.value} );
-  handleReset = gameStatus => this.setState( initialState );
+  handleChange = event => this.setState( {guessingLetter: toLower( event.target.value )} );
+  handleReset = () => this.setState( initialState );
 }

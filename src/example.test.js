@@ -44,8 +44,12 @@ describe( 'All Components can render without error', function ()
     element = React.createElement( GuessLetterSubmit,
       {
         guessingLetter: state.guessingLetter,
-        handleChange: () => {},
-        handleSubmit: () => {},
+        handleChange: () =>
+        {
+        },
+        handleSubmit: () =>
+        {
+        },
       } );
     expect( () =>
     {
@@ -55,7 +59,10 @@ describe( 'All Components can render without error', function ()
 
   it( 'can render GuessDisplay Component without error', function ()
   {
-    element = React.createElement( GuessDisplay );
+    element = React.createElement( GuessDisplay, {
+      word: state.word,
+      correctLetters: state.correctLetters,
+    } );
     expect( () =>
     {
       component = ReactTestUtils.renderIntoDocument( element );

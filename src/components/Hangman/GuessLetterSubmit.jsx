@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 export const GuessLetterSubmit = ( {guessingLetter, handleChange, handleSubmit} ) =>
 {
@@ -10,4 +11,10 @@ export const GuessLetterSubmit = ( {guessingLetter, handleChange, handleSubmit} 
       <input type="submit" value="Submit"/>
     </form>
   );
+};
+
+GuessLetterSubmit.propTypes = {
+  guessingLetter: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };

@@ -30,7 +30,7 @@ export default class App extends React.Component
     );
   }
 
-  componentDidUpdate( prevProps, prevState, snapshot )
+  componentDidUpdate = () =>
   {
     const {word, correctLetters, incorrectLetters} = this.state;
     this.handleGameStatusAndReset( word, correctLetters, incorrectLetters );
@@ -46,9 +46,9 @@ export default class App extends React.Component
   handleGuessingLogic = () =>
   {
     const {word, guessingLetter, incorrectLetters, correctLetters} = this.state;
+    const isLetterInvalid = !guessingLetter.match( /[a-z]/ );
     const isLetterAlreadyGuessed = includes( incorrectLetters + correctLetters, guessingLetter );
     const isGuessCorrect = includes( word, guessingLetter );
-    const isLetterInvalid = !guessingLetter.match( /[a-z]/ );
 
     isLetterInvalid ? this.handleInvalidInput()
                     : isLetterAlreadyGuessed ? this.handleAlreadyGuessedLetter( guessingLetter )
@@ -59,8 +59,8 @@ export default class App extends React.Component
 
   handleGameStatusAndReset = ( word, correctLetters, incorrectLetters ) =>
   {
-    let guessedWordCorrect = uniq( split( word, "" ) ).length === correctLetters.length;
-    let noMoreGuesses = incorrectLetters.length === 10;
+    const guessedWordCorrect = uniq( split( word, "" ) ).length === correctLetters.length;
+    const noMoreGuesses = incorrectLetters.length === 10;
 
     guessedWordCorrect ? this.handleGameResult( "You Won!!" )
                        : noMoreGuesses && this.handleGameResult( `You lost! The word is ${this.state.word}` )

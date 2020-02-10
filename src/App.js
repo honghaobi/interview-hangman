@@ -15,15 +15,15 @@ export default class App extends React.Component
 
   render()
   {
-    const {incorrectGuessCount, word, guessingLetter, incorrectLetters, correctLetters} = this.state;
+    const {word, guessingLetter, incorrectLetters, correctLetters} = this.state;
     return (
       <div className="App">
         <div className="container">
           <h1>React Hangman</h1>
-          <GameStatus incorrectLetters={incorrectLetters} correctLetters={correctLetters} incorrectGuessCount={incorrectGuessCount}/>
+          <GameStatus incorrectLetters={incorrectLetters} correctLetters={correctLetters}/>
           <GuessLetterSubmit guessingLetter={guessingLetter} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
           <GuessDisplay word={word} correctLetters={correctLetters}/>
-          <Hangman incorrectGuessCount={incorrectGuessCount}/>
+          <Hangman incorrectGuessCount={incorrectLetters.length}/>
         </div>
       </div>
     );
@@ -31,8 +31,8 @@ export default class App extends React.Component
 
   componentDidUpdate( prevProps, prevState, snapshot )
   {
-    const {incorrectGuessCount, word, correctLetters} = this.state;
-    this.handleGameStatusAndReset( incorrectGuessCount, word, correctLetters );
+    const {word, correctLetters, incorrectLetters} = this.state;
+    this.handleGameStatusAndReset( word, correctLetters, incorrectLetters );
   };
 
   handleSubmit = ( event ) =>
@@ -44,7 +44,7 @@ export default class App extends React.Component
 
   handleGuessingLogic = () =>
   {
-    const {incorrectGuessCount, word, guessingLetter, incorrectLetters, correctLetters} = this.state;
+    const {word, guessingLetter, incorrectLetters, correctLetters} = this.state;
     const isLetterAlreadyGuessed = includes( [...incorrectLetters, ...correctLetters], guessingLetter );
     const isGuessCorrect = includes( word, guessingLetter );
     const isLetterInvalid = !guessingLetter.match( /[a-z]/ );
@@ -52,24 +52,14 @@ export default class App extends React.Component
     isLetterInvalid ? this.handleInvalidInput()
                     : isLetterAlreadyGuessed ? this.handleAlreadyGuessedLetter( guessingLetter )
                                              : isGuessCorrect ? this.handleCorrectGuess( guessingLetter, correctLetters )
-                                                              : this.handleIncorrectGuess( guessingLetter, incorrectLetters, incorrectGuessCount );
+                                                              : this.handleIncorrectGuess( guessingLetter, incorrectLetters );
 
   };
 
-  handleCorrectGuess = ( guessingLetter, correctLetters ) => this.setState( {correctLetters: [...correctLetters, guessingLetter]} );
-
-  handleIncorrectGuess = ( guessingLetter, incorrectLetters, incorrectGuessCount ) =>
-  {
-    this.setState( {
-      incorrectGuessCount: incorrectGuessCount + 1,
-      incorrectLetters: [...incorrectLetters, guessingLetter],
-    } );
-  };
-
-  handleGameStatusAndReset = ( incorrectGuessCount, word, correctLetters ) =>
+  handleGameStatusAndReset = ( word, correctLetters, incorrectLetters ) =>
   {
     let guessedWordCorrect = uniq( split( word, "" ) ).length === correctLetters.length;
-    let noMoreGuesses = incorrectGuessCount === 10;
+    let noMoreGuesses = incorrectLetters.length === 10;
 
     guessedWordCorrect && this.handleGameResult( "You Won!!" );
     noMoreGuesses && this.handleGameResult( `You lost! The word is ${this.state.word}` )
@@ -79,8 +69,10 @@ export default class App extends React.Component
   {
     window.alert( message );
     this.handleReset();
-  }
+  };
 
+  handleCorrectGuess = ( guessingLetter, correctLetters ) => this.setState( {correctLetters: [...correctLetters, guessingLetter]} );
+  handleIncorrectGuess = ( guessingLetter, incorrectLetters ) => this.setState( {incorrectLetters: [...incorrectLetters, guessingLetter]} );
   handleInvalidInput = () => window.alert( "Please enter a valid letter" );
   handleAlreadyGuessedLetter = guessingLetter => window.alert( `You have already guessed ${guessingLetter}, please try a different letter` );
   handleChange = event => this.setState( {guessingLetter: toLower( event.target.value )} );

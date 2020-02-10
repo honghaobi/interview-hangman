@@ -5,14 +5,14 @@ import PropTypes from "prop-types";
 export const GuessDisplay = ( {word, correctLetters} ) =>
 {
   return (
-    <React.Fragment>
+    <span>
       {
-        map( word, ( letter, i ) =>
+        map( word, ( letter ) =>
         {
-          return <span key={i}>{includes( correctLetters, letter ) ? letter : " _ "}</span>;
+          return includes( correctLetters, letter ) ? letter : "_";
         } )
       }
-    </React.Fragment>
+    </span>
   );
 };
 

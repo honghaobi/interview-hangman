@@ -46,7 +46,7 @@ export default class App extends React.Component
   handleGuessingLogic = () =>
   {
     const {word, guessingLetter, incorrectLetters, correctLetters} = this.state;
-    const isLetterAlreadyGuessed = includes( [...incorrectLetters, ...correctLetters], guessingLetter );
+    const isLetterAlreadyGuessed = includes( incorrectLetters + correctLetters, guessingLetter );
     const isGuessCorrect = includes( word, guessingLetter );
     const isLetterInvalid = !guessingLetter.match( /[a-z]/ );
 
@@ -72,8 +72,8 @@ export default class App extends React.Component
     this.handleReset();
   };
 
-  handleCorrectGuess = ( guessingLetter, correctLetters ) => this.setState( {correctLetters: [...correctLetters, guessingLetter]} );
-  handleIncorrectGuess = ( guessingLetter, incorrectLetters ) => this.setState( {incorrectLetters: [...incorrectLetters, guessingLetter]} );
+  handleCorrectGuess = ( guessingLetter, correctLetters ) => this.setState( {correctLetters: correctLetters + guessingLetter} );
+  handleIncorrectGuess = ( guessingLetter, incorrectLetters ) => this.setState( {incorrectLetters: incorrectLetters + guessingLetter} );
   handleInvalidInput = () => window.alert( "Please enter a valid letter" );
   handleAlreadyGuessedLetter = guessingLetter => window.alert( `You have already guessed ${guessingLetter}, please try a different letter` );
   handleChange = event => this.setState( {guessingLetter: toLower( event.target.value )} );

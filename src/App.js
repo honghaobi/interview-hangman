@@ -61,8 +61,8 @@ export default class App extends React.Component
     let guessedWordCorrect = uniq( split( word, "" ) ).length === correctLetters.length;
     let noMoreGuesses = incorrectLetters.length === 10;
 
-    guessedWordCorrect && this.handleGameResult( "You Won!!" );
-    noMoreGuesses && this.handleGameResult( `You lost! The word is ${this.state.word}` )
+    guessedWordCorrect ? this.handleGameResult( "You Won!!" )
+                       : noMoreGuesses && this.handleGameResult( `You lost! The word is ${this.state.word}` )
   };
 
   handleGameResult = ( message ) =>

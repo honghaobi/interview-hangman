@@ -96,7 +96,7 @@ describe( 'GuessDisplay Component rendering', function ()
   afterEach( () =>
   {
     renderer = null;
-  } )
+  } );
 
   it( 'render for no correct letters guessed', function ()
   {
@@ -132,6 +132,76 @@ describe( 'GuessDisplay Component rendering', function ()
     const result = renderer.getRenderOutput();
     expect( result.props.children ).toEqual(
       ['h', 'e', 'l', 'l', 'o']
+    );
+  } );
+} );
+
+describe( 'GameStatus Component rendering', function ()
+{
+  beforeAll( () =>
+  {
+    state = mockInitialState;
+    renderer = new ShallowRenderer();
+  } );
+
+  beforeEach( () =>
+  {
+    renderer = new ShallowRenderer();
+  } );
+
+  afterEach( () =>
+  {
+    renderer = null;
+  } );
+
+  it( 'render for 1 correct letter and 1 incorrect letter', function ()
+  {
+    renderer.render( <GameStatus incorrectLetters="x" correctLetters="h"/> );
+    const result = renderer.getRenderOutput();
+    const parentDiv = result.props.children;
+    expect( result.type ).toBe( 'div' );
+    expect( parentDiv[0].props.children ).toEqual(
+      ["Incorrect Letters: ", "x"]
+    );
+    expect( parentDiv[1].props.children ).toEqual(
+      ["Correct Letters: ", "h"]
+    );
+    expect( parentDiv[2].props.children ).toEqual(
+      ["Number of Guesses Left: ", 9]
+    );
+  } );
+
+  it( 'render for 4 correct letter and 0 incorrect letter', function ()
+  {
+    renderer.render( <GameStatus incorrectLetters="" correctLetters="helo"/> );
+    const result = renderer.getRenderOutput();
+    const parentDiv = result.props.children;
+    expect( result.type ).toBe( 'div' );
+    expect( parentDiv[0].props.children ).toEqual(
+      ["Incorrect Letters: ", ""]
+    );
+    expect( parentDiv[1].props.children ).toEqual(
+      ["Correct Letters: ", "helo"]
+    );
+    expect( parentDiv[2].props.children ).toEqual(
+      ["Number of Guesses Left: ", 10]
+    );
+  } );
+
+  it( 'render for 0 correct letter and 10 incorrect letter', function ()
+  {
+    renderer.render( <GameStatus incorrectLetters="abcdefghij" correctLetters=""/> );
+    const result = renderer.getRenderOutput();
+    const parentDiv = result.props.children;
+    expect( result.type ).toBe( 'div' );
+    expect( parentDiv[0].props.children ).toEqual(
+      ["Incorrect Letters: ", "abcdefghij"]
+    );
+    expect( parentDiv[1].props.children ).toEqual(
+      ["Correct Letters: ", ""]
+    );
+    expect( parentDiv[2].props.children ).toEqual(
+      ["Number of Guesses Left: ", 0]
     );
   } );
 } );

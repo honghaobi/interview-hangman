@@ -163,7 +163,7 @@ describe( 'GameStatus Component rendering', function ()
       ['Correct Letters: ', 'h']
     );
     expect( parentDiv[2].props.children ).toEqual(
-      ['Number of Guesses Left: ', 9]
+      ['Guesses Left: ', 9]
     );
   } );
 
@@ -180,7 +180,7 @@ describe( 'GameStatus Component rendering', function ()
       ['Correct Letters: ', 'helo']
     );
     expect( parentDiv[2].props.children ).toEqual(
-      ['Number of Guesses Left: ', 10]
+      ['Guesses Left: ', 10]
     );
   } );
 
@@ -197,7 +197,7 @@ describe( 'GameStatus Component rendering', function ()
       ['Correct Letters: ', '']
     );
     expect( parentDiv[2].props.children ).toEqual(
-      ['Number of Guesses Left: ', 0]
+      ['Guesses Left: ', 0]
     );
   } );
 } );

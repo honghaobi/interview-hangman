@@ -7,7 +7,7 @@ export const GameStatus = ( {incorrectLetters, correctLetters} ) =>
     <div>
       <h3>Incorrect Letters: {incorrectLetters}</h3>
       <h3>Correct Letters: {correctLetters}</h3>
-      <h3>Number of Guesses Left: {10 - incorrectLetters.length}</h3>
+      <h3>Guesses Left: {10 - incorrectLetters.length}</h3>
     </div>
   );
 };

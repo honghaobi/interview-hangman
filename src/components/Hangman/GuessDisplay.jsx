@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export const GuessDisplay = ( {word, correctLetters} ) =>
 {
   return (
-    <span>
+    <span className="guessDisplay">
       {
         map( word, ( letter ) =>
         {

@@ -1,5 +1,79 @@
-.Hangman {
-  border: 1px solid #ccc;
-  padding: 16px;
+.displayContainer
+{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  width: 50%;
+  margin: 0 auto;
+  height: 100vh;
+  padding: 20px;
+  color: #04D9B2;
+  background-color: #011640;
+  font-size: 30px;
+}
+
+.hangmanContainer
+{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  width: 50%;
+  height: 100vh;
+  margin: 0 auto;
+  color: #04D9B2;
+}
+
+.guessDisplay
+{
+  font-size: 80px;
+  letter-spacing: 20px;
+}
+
+form
+{
+  display: flex;
+  margin-top: 30px;
+  font-size: 40px;
+}
+
+input.input
+{
+  background: #F2B872;
+  color: #F20505;
+  font-weight: bolder;
+  height: 50px;
+  font-size: 45px;
+  line-height: 45px;
+  border: none;
+  width: 50px;
+  border: none;
+  text-align: center;
+}
+
+.submitBtn
+{
+  font-family: "Open Sans";
+  font-weight: bold;
+  margin-left: 30px;
+  font-size: 30px;
+  line-height: 50px;
+  border-radius: 25px;
+  padding: 0 40px;
+  height: 50px;
+  border: 0;
+  color: #011640;
+  background: #04D9B2;
+}
+
+.Hangman
+{
+  padding: 15px;
   margin: 0;
+  background-color: #011640;
 }

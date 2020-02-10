@@ -18,12 +18,13 @@ export default class App extends React.Component
     const {word, guessingLetter, incorrectLetters, correctLetters} = this.state;
     return (
       <div className="App">
-        <div className="container">
-          <h1>React Hangman</h1>
+        <div className="displayContainer">
           <GameStatus incorrectLetters={incorrectLetters} correctLetters={correctLetters}/>
           <GuessLetterSubmit guessingLetter={guessingLetter} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
-          <GuessDisplay word={word} correctLetters={correctLetters}/>
+        </div>
+        <div className="hangmanContainer">
           <Hangman incorrectGuessCount={incorrectLetters.length}/>
+          <GuessDisplay word={word} correctLetters={correctLetters}/>
         </div>
       </div>
     );

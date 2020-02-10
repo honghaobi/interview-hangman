@@ -5,10 +5,8 @@ export const GuessLetterSubmit = ( {guessingLetter, handleChange, handleSubmit} 
 {
   return (
     <form onSubmit={handleSubmit}>
-      <label>Guess a letter:
-        <input required type="text" name="name" minLength="1" maxLength="1" value={guessingLetter} onChange={handleChange}/>
-      </label>
-      <input type="submit" value="Submit"/>
+      <input className="input" required type="text" name="name" minLength="1" maxLength="1" value={guessingLetter} onChange={handleChange}/>
+      <input type="submit" className="submitBtn" value="Submit"/>
     </form>
   );
 };
